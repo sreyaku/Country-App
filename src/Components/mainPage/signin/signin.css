@@ -1,0 +1,165 @@
+body{
+    text-align: center;
+}
+
+.main-right-heading{
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-size: 45px;
+    font-weight: 500;
+    color: #04703a;
+    display: flex;
+    justify-content: center;
+    padding-top: 0px;
+}
+
+.main-right-sub{
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-size: 25px;
+    font-weight: 500;
+    color: #04703a;
+    padding-left: 50px;
+    display: flex;
+    justify-content: center;
+
+}
+
+.login-items{
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-size: 25px;
+    font-weight: 500;
+    color: #04703a;
+}
+
+.form-input{
+    width: 500px;
+    margin-left: 100px;   
+    outline: 0;
+    box-shadow: none;
+    text-align: left;
+    border-radius: 10px;
+    
+}
+
+.form-input:focus{
+    padding: 0px;
+    font-size: 18px;
+    font-weight: 300;
+    padding-left: 10px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+}
+
+::placeholder{
+    text-align: left;
+}
+
+.sign-in-button{
+    padding: 10px;
+    border-style: solid;
+    border-radius: 20px;
+    background-color: #04703a;
+    border-color: white;
+    width: 200px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    text-decoration: none;
+    font-weight: 300;
+    color: white;
+    font-size: 20px;
+    margin-top: 8px;
+    text-align: center;
+}
+
+.sign-in-button:hover{
+    border-color: #04694a;
+    background-color: white;
+    color: #04703a;
+    font-weight: 500;
+    outline: 0;
+    box-shadow: none;
+}
+
+.sign-in-button:focus{
+    border-color: #04694a;
+    background-color: white;
+    color: #04703a;
+    outline: 0;
+    box-shadow: none;
+    font-size: 20px;
+    font-weight: 500;
+    padding: 2px;
+    border-radius: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    
+    
+}
+
+
+.icons{
+   position: relative;
+   top: -2px;
+}
+
+
+@media(max-width: 1200px){
+    .form-input{
+        width: 400px;
+
+    }
+}
+
+@media(max-width: 1050px){
+    .form-input{
+        width: 400px;
+
+    }
+}
+
+@media(max-width: 850px){
+    .form-input{
+        margin-left: 200px;
+
+    }
+}
+
+
+
+@media(max-width: 700px){
+    .form-input{
+        margin-left: 50px;
+    }
+}
+
+@media(max-width: 600px){
+    .form-input{
+        width: 400px;
+        margin-left: 100px;
+    }
+}
+
+@media(max-width: 550px){
+
+    .main-right-sub{
+        margin-left: -50px;
+    }
+
+    .form-input{
+        width: 320px;
+        margin-left: 10px;
+    }
+}
+
+
+@media(max-width: 500px){
+
+    .main-right-sub{
+        margin-left: -50px;
+    }
+
+    .form-input{
+        width: 320px;
+        margin-left: 10px;
+    }
+}
+
+

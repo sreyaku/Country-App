@@ -1,0 +1,13 @@
+[
+    {
+        "name" : "Name",
+        "email" : "Email",
+        "password" : "Password",
+        "confirmPassword" : "Confirm Password",
+        "placeholderN": "Enter your name",
+        "placeholderE" : "Enter your email",
+        "placeholderP" : "Enter your password",
+        "placeholderC" : "Enter your password again",
+        "url" : "https://geoenrich.arcgis.com/arcgis/rest/services/World/geoenrichmentserver/Geoenrichment/countries?f=pjson"
+    }
+]
