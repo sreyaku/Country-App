@@ -56,6 +56,7 @@ function RegisterPageForm() {
         setInputDetails({ ...inputDetails, [name]: value })
     }
 
+
     const validate = () => {
         let nameError = ''
         let emailError = ''
@@ -64,6 +65,7 @@ function RegisterPageForm() {
         let confirmPasswordError = ''
         var format = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/
         const regex = /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/
+        let firstEmailIndex = ((inputDetails.email.length)-4)
         if (!inputDetails.name) {
             nameError = 'Please enter your name'
         }
@@ -75,6 +77,9 @@ function RegisterPageForm() {
         }
         else if (!regex.test(inputDetails.email)) {
             emailError = 'Please enter a valid email'
+        }
+        else if(inputDetails.email.charAt(firstEmailIndex) !=='.'){
+            emailError = 'Please enter a valid email' 
         }
         else if (JSON.parse(manageLocalStorage.get('registerUser') != null)) {
             var details = JSON.parse(manageLocalStorage.get('registerUser'))
@@ -117,20 +122,18 @@ function RegisterPageForm() {
                 count = count + 1
                 manageLocalStorage.set('count', count)
                 manageLocalStorage.set('registerUser', registerUser)
-                // console.log(registerUser)
             } 
             else {
                 registerUser[count] = inputDetails
                 count = count + 1
                 manageLocalStorage.set('count', count)
                 manageLocalStorage.set('registerUser', registerUser)
-                // console.log(registerUser)
-                // console.log(count)
             }
             setSuccess(true)
             setInputDetails(initialInput)
             setInputError(initialInputErrors)
             setTimeout(() => navigate('/'), 500)
+            
         }
         event.preventDefault()
     }
@@ -143,8 +146,6 @@ function RegisterPageForm() {
             })
         if (JSON.parse(manageLocalStorage.get('registerUser')) != null && manageLocalStorage.get('count')) {
             registerUser = JSON.parse(manageLocalStorage.get('registerUser'))
-            // console.log(registerUser)
-            // console.log(localStorage.getItem('count'))
             count = JSON.parse(manageLocalStorage.get('count'))
         }
     }, [])

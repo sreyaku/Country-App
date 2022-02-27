@@ -1,35 +1,21 @@
 import React from 'react';
-import { useState, useEffect } from 'react';
-import { countryDetails } from '../countryServices/countryServices';
-import './sideMenu.css';
+import { useState, useContext } from 'react';
+import CountryContext from '../core/Context/countryContext';
 import CountryNames from '../countryNames/countryNames';
 import { Row, Col, Container } from 'react-bootstrap';
 import { manageLocalStorage } from '../countryServices/countryStorage';
+import './sideMenu.css';
+
 
 function SideMenu() {
-    const [continents, setContinents] = useState([])
+    const continents = useContext(CountryContext)
     var uniqueContinents = [...new Set(continents.map(item => item.continent))]
     uniqueContinents = uniqueContinents.sort((a, b) => a.localeCompare(b))
     const [selectedContinent, setSelectedContinent] = useState('')
-    // const [status, setStatus] = useState(false)
-    useEffect(() => {
-        countryDetails().then(res => {
-            setContinents(res.data.countries)
-        })
-            .catch(err => {
-                console.log(err)
-            })
-    }, [])
-
-
-
     const listHandle = (event) => {
         setSelectedContinent(event.target.value)
-        // localStorage.setItem('selectedContinent', JSON.stringify(event.target.value))
         manageLocalStorage.set('selectedContinent', event.target.value)
     }
-
-
 
     return (
         <div>
@@ -42,7 +28,6 @@ function SideMenu() {
                                 uniqueContinents.map(uniqueContinent => { return <li key={uniqueContinent}><button className='unique-continent-li' key={uniqueContinent} value={uniqueContinent} onClick={listHandle}>{uniqueContinent}</button></li> })
                             }
                         </ul>
-
                     </Col>
                     <Col className='sidemenu-second-col' lg={9}>
                         {selectedContinent == '' ? <CountryNames selectedContinent={uniqueContinents[0]} /> : <CountryNames selectedContinent={selectedContinent} />}
@@ -50,7 +35,6 @@ function SideMenu() {
                 </Row>
             </Container>
         </div>
-
     )
 }
 

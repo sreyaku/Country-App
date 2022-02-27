@@ -1,7 +1,7 @@
 import React from 'react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
-import CountryDetails from '../countryNameDetails/countryNameDetails';
+import CountryContext from '../core/Context/countryContext';
 import { countryDetails } from '../countryServices/countryServices';
 import Pagination from '../pagination/pagination';
 import Popup from '../popup/popup';
@@ -11,36 +11,29 @@ import './countryNames.css';
 
 
 
+
 let favouriteCountries = []
 function CountryNames(props) {
     const [popup, setPopup] = useState(false)
-    const [countries, setCountries] = useState([])
     const [countryName, setCountryName] = useState('')
     const [currentPost, setCurrentPost] = useState(1)
     const [postPerPage, setPostPerPage] = useState(5)
     const [favourite, setFavourite] = useState()
-
     const indexOfLastPost = currentPost * postPerPage
     const indexOfFirstPost = indexOfLastPost - postPerPage
+    const countries = useContext(CountryContext)
     const matchedCountries = []
     let count = 0
 
 
 
     useEffect(() => {
-        countryDetails().then(res => {
-            setCountries(res.data.countries)
-        })
-            .catch(err => {
-                console.log(err)
-            })
-        if (JSON.parse(localStorage.getItem('favouriteCountries')) != '') {
+        if (JSON.parse(manageLocalStorage.get('favouriteCountries')) != '') {
             let selectedFavouriteCountries = JSON.parse(manageLocalStorage.get('favouriteCountries'))
-            for (let i = 0; i < selectedFavouriteCountries.length; i++) {
-                favouriteCountries.push(selectedFavouriteCountries[i])
-            }
-            setCurrentPost(1)
+            favouriteCountries = [...new Set(selectedFavouriteCountries.map(item => item))]
+            console.log(favouriteCountries)
         }
+        setCurrentPost(1)
     }, [props.selectedContinent])
 
     const detailsHandle = (event) => {
@@ -72,7 +65,7 @@ function CountryNames(props) {
                 setFavourite(event.target.value)
             }
         }
-        localStorage.setItem('favouriteCountries', JSON.stringify(favouriteCountries))
+        manageLocalStorage.set('favouriteCountries', favouriteCountries)
     }
 
     return (

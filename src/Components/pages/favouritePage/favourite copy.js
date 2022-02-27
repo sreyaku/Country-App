@@ -9,6 +9,7 @@ import CountryContext from '../../core/Context/countryContext';
 import { manageLocalStorage } from '../../countryServices/countryStorage';
 
 
+let favouriteCountries
 let selectedFavouriteCountries
 function Favourite() {
   const [currentPost, setCurrentPost] = useState(1)
@@ -18,22 +19,12 @@ function Favourite() {
   const [countryName, setCountryName] = useState('')
   const indexOfLastPost = currentPost * postPerPage;
   const indexOfFirstPost = indexOfLastPost - postPerPage
-  const [resetPage, setResetPage] = useState(false)
   const countries = useContext(CountryContext) 
 
 
   useEffect(() => {
     if (JSON.parse(manageLocalStorage.get('favouriteCountries')) != "") {
       selectedFavouriteCountries = JSON.parse(manageLocalStorage.get('favouriteCountries'))
-    }
-    if(resetPage == true){
-      let numberOfPosts = currentPost[0]
-      if(numberOfPosts != 1){
-        setCurrentPost(numberOfPosts - 1)
-      }
-      else{
-        setCurrentPost(numberOfPosts)
-      }
     }
   }, [count])
 
@@ -48,14 +39,6 @@ function Favourite() {
   }
 
   const removeHandler = (event) => {
-    let finalPageFavouriteCountries = (selectedFavouriteCountries.length)%postPerPage
-    if(finalPageFavouriteCountries == 1){
-      setResetPage(true)
-      console.log(resetPage)
-    }
-    else{
-      setResetPage(false)
-    }
     let country = event.target.value
     const favouriteCountries = selectedFavouriteCountries.filter((item) => {
       setCount(count + 1)

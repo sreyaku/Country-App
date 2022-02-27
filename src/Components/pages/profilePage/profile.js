@@ -1,9 +1,13 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useContext, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Container, Row, Col, Table, Button, Form } from "react-bootstrap";
-import { countryDetails } from '../../countryServices/countryServices';
+import CountryContext from '../../core/Context/countryContext';
+import { manageLocalStorage } from '../../countryServices/countryStorage';
 import NavigationBar from '../../navbar/navigationBar';
 import './profile.css';
+import CountryNameDetails from '../../countryNameDetails/countryNameDetails';
+
+
 
 
 function Profile() {
@@ -19,29 +23,22 @@ function Profile() {
   const [changePassWord, setchangePassWord] = useState(false)
   const [changeDisplayName, setChangeDisplayName] = useState(false)
   const [userCountry, setUserCountry] = useState('')
-  const [countries, setCountries] = useState([])
   const [deleteAccount, setDeleteAccount] = useState(false)
+  const countries = useContext(CountryContext)
   const navigate = useNavigate()
   var format = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/
 
   useEffect(() => {
-    countryDetails().then(res => {
-      setCountries(res.data.countries)
-      var details = JSON.parse(localStorage.getItem('registerUser'))
-      console.log(JSON.parse(localStorage.getItem('registerUser')))
+      var details = JSON.parse(manageLocalStorage.get('registerUser'))
       var len = Object.keys(details).length;
       for (let i = 0; i < len; i++) {
-        if (details[i].name === localStorage.getItem('currentUser')) {
+        if (details[i].name === manageLocalStorage.get('currentUser')) {
           setName(details[i].name)
           setPassword(details[i].password)
           setEmail(details[i].email)
           setUserCountry(details[i].country)
         }
       }
-    })
-      .catch(err => {
-        console.log(err)
-      })
   }, [])
 
   const cancelChangeDisplayName = () => {
@@ -72,13 +69,11 @@ function Profile() {
         password: password
       }
       localStorage.setItem('currentUser', displayNameRef.current.value)
-      var details = JSON.parse(localStorage.getItem('registerUser'))
-      console.log(details)
+      var details = JSON.parse(manageLocalStorage.get('registerUser'))
       const index = details.findIndex((item) => item.email == email);
       console.log(index)
       details[index] = dataObject;
       localStorage.setItem('registerUser', JSON.stringify(details))
-      console.log(JSON.parse(localStorage.getItem('registerUser')))
     }
   }
 
@@ -142,7 +137,7 @@ function Profile() {
       const index = details.findIndex((item) => item.email == email);
       console.log(index)
       details[index] = dataObject;
-      localStorage.setItem('registerUser', JSON.stringify(details))
+      manageLocalStorage.set('registerUser', details)
       console.log(JSON.parse(localStorage.getItem('registerUser')))
     }
     else {
@@ -162,13 +157,11 @@ function Profile() {
   }
 
   const yesHandler = () => {
-    console.log(localStorage.getItem('currentUser'))
-    let details = JSON.parse(localStorage.getItem('registerUser'));
+    let details = JSON.parse(manageLocalStorage.get('registerUser'));
     let newDetails = details.filter((item) => item.email != email);
-    localStorage.setItem('registerUser', JSON.stringify(newDetails));
-    let count=localStorage.getItem('count')
-    localStorage.setItem('count', count-1)
-    console.log(JSON.parse(localStorage.getItem('registerUser')))
+    manageLocalStorage.set('registerUser', newDetails);
+    let count=manageLocalStorage.get('count')
+    manageLocalStorage.set('count', count-1)
     navigate('/')
   }
 
@@ -218,23 +211,7 @@ function Profile() {
             {deleteAccount ? <h1 className='delete-account-message'>Do you want to delete your Account <Button variant='danger' onClick={yesHandler} style={{ marginRight: '10px' }}>Yes</Button><Button variant='success' onClick={noHandler}>No</Button></h1> : <Button className='delete-button' variant='danger' onClick={deleteHandler} style={{ marginBottom: '10px' }}>Delete Account</Button>}
           </Col>
           <Col className='profile-second-col' lg={4}>
-            {
-              countries.map(country => {
-                if (country.name === userCountry) {
-                  return (
-                    <ul className='country-details-ul'>User Country Details
-                      <li className='country-details-li' key={country.name}><span className='country-details-head'>Country ID:</span> {country.id}</li>
-                      <li className='country-details-li' key={country.name}><span className='country-details-head'>Country Name:</span> {country.name}</li>
-                      <li className='country-details-li' key={country.name}><span className='country-details-head'>Country Abbreviation:</span> {country.abbr3}</li>
-                      <li className='country-details-li' key={country.name}><span className='country-details-head'>Country ALTName:</span> {country.altName}</li>
-                      <li className='country-details-li' key={country.name}><span className='country-details-head'>Continent:</span> {country.continent}</li>
-                      <li className='country-details-li' key={country.name}><span className='country-details-head'>Units of Distance:</span> {country.distanceUnits}</li>
-                      <li className='country-details-li' key={country.name}><span className='country-details-head'>ESRI Units:</span> {country.esriUnits}</li>
-                    </ul>
-                  )
-                }
-              })
-            }
+            <CountryNameDetails name={userCountry} />
           </Col>
         </Row>
       </Container>

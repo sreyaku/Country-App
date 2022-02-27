@@ -1,19 +1,9 @@
-import React, { useEffect, useState } from 'react'
-import { countryDetails } from '../countryServices/countryServices';
+import React, { useContext } from 'react'
+import CountryContext from '../core/Context/countryContext'
 import './countryNameDetails.css'
 
 function CountryNameDetails(props) {
-    const [countries, setCountries] = useState([])
-
-    useEffect(()=>{
-        countryDetails().then(res=>{
-            setCountries(res.data.countries)
-        })
-        .catch(err=>{
-            console.log(err)
-        })
-    })
-
+    const countries = useContext(CountryContext)
     return (
         <div>
             {
